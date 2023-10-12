@@ -1,75 +1,242 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor.Events;
+#endif
+using UnityEngine.Events;
 using UnityEditor;
 using System.Linq;
+[System.Serializable]
 
-public class CSVReader : MonoBehaviour
+public class LoadFromCsv
 {
-    public TextAsset csvFile;
-
-    public void Start()
+#if UNITY_EDITOR
+    //[MenuItem("Rational/Puzzles/ScriptableObjects/Generate")]
+    public static void LoadCSVToScriptableObjects()
     {
-        string[,] grid = SplitCsvGrid(csvFile.text);
-        //Debug.Log("size = " + (1 + grid.GetUpperBound(0)) + "," + (1 + grid.GetUpperBound(1)));
+        var csvText = Resources.Load<TextAsset>("Puzzle_Rational/Test").text;
 
-        DebugOutputGrid(grid);
+        string[] lineSeparators = new string[] { "\n", "\r", "\n\r", "\r\n" };
+        char[] cellSeparator = new char[] { ';' };
+
+        var lines = csvText.Split(lineSeparators, System.StringSplitOptions.RemoveEmptyEntries);
+        List<string[]> completeExcelFile = new List<string[]>();
+
+        foreach (var i in lines)
+        {
+            completeExcelFile.Add(i.Split(cellSeparator, System.StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        foreach (var item in completeExcelFile.Skip(1))
+        {
+            CreateScriptable(item);
+        }
     }
 
-    // outputs the content of a 2D array, useful for checking the importer
-    static public void DebugOutputGrid(string[,] grid)
+    [MenuItem("CSV/Generate Prefab")]
+    public static void Check1()
     {
-        string textOutput = "";
-        for (int y = 0; y < grid.GetUpperBound(1); y++)
+        LoadCSVToPrefab("Puzzle_Rational/SC_#1");
+    }
+
+    public static void LoadCSVToPrefab(string _path)
+    {
+        string path = _path;
+
+        var csvText = Resources.Load<TextAsset>(path).text;
+
+        string[] lineSeparators = new string[] { "\n", "\r", "\n\r", "\r\n" };
+        char[] cellSeparator = new char[] { ';' };
+
+        var lines = csvText.Split(lineSeparators, System.StringSplitOptions.RemoveEmptyEntries);
+        List<string[]> completeExcelFile = new List<string[]>();
+
+        foreach (var i in lines)
         {
-            for (int x = 0; x < grid.GetUpperBound(0); x++)
+            completeExcelFile.Add(i.Split(cellSeparator, System.StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        foreach (var item in completeExcelFile.Skip(1))
+        {
+            CreatePrefab(item);
+        }
+        Debug.LogWarning("Data was checked");
+    }
+
+    private static void CreateScriptable(string[] entry)
+    {
+        /*var newScriptableObject = ScriptableObject.CreateInstance<CombinableObject_Data>();
+        newScriptableObject.Init(entry);
+        
+        // Set the path as within the Assets folder,
+        // and name it as the ScriptableObject's name with the .Asset format
+        string localPath = "Assets/Scripts/CSV/" + newScriptableObject.Name + ".asset";
+
+        AssetDatabase.CreateAsset(newScriptableObject, localPath);*/
+    }
+
+    static void CreatePrefab(string[] entry)
+    {
+        List<string> missingObject = new List<string>();
+        if (entry[0].Contains("true"))
+        {
+            GameObject newPrefab = GameObject.Find(entry[1]);
+
+            if (newPrefab == null)
             {
-
-                textOutput += grid[x, y];
-                textOutput += "|";
+                missingObject.Add(entry[1]);
+                newPrefab = new GameObject(entry[1] + " was not founded");
             }
-            textOutput += "\n";
-        }
-        Debug.Log(textOutput);
-    }
 
-    // splits a CSV file into a 2D string array
-    static public string[,] SplitCsvGrid(string csvText)
-    {
-        string[] lines = csvText.Split("\n"[0]);
+            var co = newPrefab.GetComponent<MyScript>();
 
-        // finds the max width of row
-        int width = 0;
-        for (int i = 0; i < lines.Length; i++)
-        {
-            string[] row = SplitCsvLine(lines[i]);
-            width = Mathf.Max(width, row.Length);
-        }
+            //System.Array.Clear(co.useWith, 0, co.useWith.Length);
 
-        // creates new 2D string grid to output to
-        string[,] outputGrid = new string[width + 1, lines.Length + 1];
-        for (int y = 0; y < lines.Length; y++)
-        {
-            string[] row = SplitCsvLine(lines[y]);
-            for (int x = 0; x < row.Length; x++)
+            if (co == null)
             {
-                outputGrid[x, y] = row[x];
+                co = newPrefab.AddComponent<MyScript>();
+            }
+            co.GetComponent();
 
-                // This line was to replace "" with " in my output. 
-                // Include or edit it as you wish.
-                outputGrid[x, y] = outputGrid[x, y].Replace("\"\"", "\"");
+            if (!co.component_1)
+            {
+                co.component_1 = newPrefab.AddComponent<MyScript>();
+            }
+            if (!co.component_2)
+            {
+                co.component_2 = newPrefab.AddComponent<MyScript>();
+            }
+            if (!co.component_3)
+            {
+                co.component_3 = newPrefab.AddComponent<MyScript>();
+            }
+
+            if (entry[3].Contains("DYNAMIQUE"))
+            {
+                /*MyScript xrInteractable = newPrefab.GetComponent<MyScript>();
+
+                if (xrInteractable == null)
+                {
+                    xrInteractable = newPrefab.AddComponent<MyScript>();
+                }
+
+                var mustImplementToogleOutline = true;
+
+                for (int i = 0; i < xrInteractable.hoverEntered.GetPersistentEventCount(); i++)
+                {
+                    if (xrInteractable.hoverEntered.GetPersistentMethodName(i) == "ToggleOutline")
+                    {
+                        mustImplementToogleOutline = false;
+                    }
+                }
+
+                if (mustImplementToogleOutline)
+                {
+                    UnityAction<bool> action1 = new UnityAction<bool>(co.ToggleOutline);
+                    UnityEventTools.AddBoolPersistentListener(xrInteractable.hoverEntered, action1, true);
+
+                    UnityAction<bool> action2 = new UnityAction<bool>(co.ToggleOutline);
+                    UnityEventTools.AddBoolPersistentListener(xrInteractable.hoverExited, action2, false);
+                }*/
+            }
+            else if (entry[3].Contains("STATIQUE"))
+            {
+                /*XRSimpleInteractableWithAutoSetup xrInteractable = newPrefab.GetComponent<XRSimpleInteractableWithAutoSetup>();
+                if (xrInteractable == null)
+                {
+                    xrInteractable = newPrefab.AddComponent<XRSimpleInteractableWithAutoSetup>();
+                }
+                var mustImplementToogleOutline = true;
+                for (int i = 0; i < xrInteractable.hoverEntered.GetPersistentEventCount(); i++)
+                {
+                    if (xrInteractable.hoverEntered.GetPersistentMethodName(i) == "ToggleOutline")
+                    {
+                        mustImplementToogleOutline = false;
+                    }
+                }
+                if (mustImplementToogleOutline)
+                {
+                    UnityAction<bool> action1 = new UnityAction<bool>(co.ToggleOutline);
+                    UnityEventTools.AddBoolPersistentListener(xrInteractable.hoverEntered, action1, true);
+
+                    UnityAction<bool> action2 = new UnityAction<bool>(co.ToggleOutline);
+                    UnityEventTools.AddBoolPersistentListener(xrInteractable.hoverExited, action2, false);
+                }*/
+            }
+
+
+            foreach (var item in missingObject)
+            {
+                Debug.Log(item + " is missing");
+            }
+
+            co.Init(entry);
+
+            co.transform.SetAsLastSibling();
+        }
+    }
+#endif
+
+#if UNITY_EDITOR
+    //[MenuItem("Rational/Puzzles/Prefab/Save Current Selection")]
+    static void SaveCurrentSelectionIntoPrefabAsset()
+    {
+        if (Selection.gameObjects != null && !EditorUtility.IsPersistent(Selection.activeGameObject))
+        {
+            foreach (var go in Selection.gameObjects)
+            {
+                string localPath = "Assets/Prefabs/Combinables/" + go.name + ".prefab";
+
+                // Make sure the file name is unique, in case an existing Prefab has the same name.
+                localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
+
+                // Create the new Prefab.
+                PrefabUtility.SaveAsPrefabAssetAndConnect(go, localPath, InteractionMode.UserAction);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Selection is null");
+        }
+    }
+
+    public struct Element
+    {
+        public string line, column, element;
+        /*
+                public Element(string line*//*, string column, string element*//*)
+                {
+                    this.line = line;*//*
+                    this.column = column;
+                    this.element = element;*//*
+                }*/
+
+    }
+
+    static void DebugEntry(string[] entry)
+    {
+        for (int i = 1; i < 16; i++)
+        {
+            if (entry[i].Contains("Null"))
+            {
+                Debug.Log(entry[0] + ", " + entry[i]);
             }
         }
 
-        return outputGrid;
     }
+#endif
+}
 
-    // splits a CSV row 
-    static public string[] SplitCsvLine(string line)
+public class LoadCSV : ScriptableObject
+{
+    public TextAsset sc1, sc2, sc3;
+
+    public void Init()
     {
-        return (from System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(line,
-        @"(((?<x>(?=[,\r\n]+))|""(?<x>([^""]|"""")+)""|(?<x>[^,\r\n]+)),?)",
-        System.Text.RegularExpressions.RegexOptions.ExplicitCapture)
-                select m.Groups[1].Value).ToArray();
+        sc1 = Resources.Load<TextAsset>("Puzzle_Rational/SC_#1");
+        sc2 = Resources.Load<TextAsset>("Puzzle_Rational/SC_#2");
+        sc3 = Resources.Load<TextAsset>("Puzzle_Rational/SC_#3");
     }
 }
