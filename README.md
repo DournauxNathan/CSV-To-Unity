@@ -89,11 +89,3 @@ To use this project, follow these steps:
 
 6. Save Prefabs (Optional):
    - After generating GameObjects, you can save them as prefab assets by selecting them in the Hierarchy and clicking the "Save Prefabs" button in the Inspector.
-
-## Contributing
-
-Contributions to this project are welcome. You can submit bug reports, feature requests, or pull requests through GitHub.
-
-## License
-
-This project is licensed under the [License Name] License - see the [LICENSE.md](LICENSE.md) file for details.
