@@ -1,7 +1,10 @@
 /*
+ * MyScript - Created by Dournaux Nathan:
  * MyScript is designed to manage a GameObject's attributes, components, and data.
  * It includes methods for initializing the object, loading combinations of data, and retrieving component references.
  * This script is suitable for handling object properties and interactions within a Unity scene.
+ * Note : You can modify it to suit your project ! Don't only forget to correctly name your variabl, chekc their accessibility.
+ * And for you own CSV file, Chekc your colum, t osee if it correctly corresponding to the entry of when reading the CSV file.
  */
 
 using System.Collections;
@@ -129,9 +132,6 @@ public class MyScript : MonoBehaviour
                 // Set the 'outcome' property to the value at 'entry' index 'lastColumn + 2'
                 outcome = entry[lastColumn + 2]
             };
-
-            // Output debugging information to the console, showing the current iteration 'i' and the column indices used
-            Debug.Log(i + ": " + lastColumn + ", " + (lastColumn + 1) + ", " + (lastColumn + 2));
 
             // Increment the 'lastColumn' index by 3 to move to the next set of columns in the 'entry' array
             lastColumn += 3;
