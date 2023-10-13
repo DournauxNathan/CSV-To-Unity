@@ -5,6 +5,11 @@
 This Unity project is designed to help you manage and process CSV data in a Unity scene by creating GameObjects and associating data with them. The project includes three key scripts: `CSVConfiguration`, `MyScript`, and `CSVConfigurationEditor`. 
 These scripts work together to facilitate the loading and creation of GameObjects based on CSV data and enable customization of the Inspector interface for the CSV configuration.
 
+## Preview
+![Generate GameObject](images/GenerateGO.gif)
+![Save as Prefabs](images/SavePrefab.gif)
+
+
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
