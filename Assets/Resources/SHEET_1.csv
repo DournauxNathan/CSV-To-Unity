@@ -1,0 +1,19 @@
+Generate,Object Name,ID,State,Total Combinations,First Combination,Influence,Outcome 1,Second Combination,Influence,Outcome 2,Third Combination,Influence,Outcome 3
+TRUE,Potion,1,State_1,3,Herb,1,Enhances strength.,Crystal,0,No significant effect.,Snake Venom,-1,Leads to negative side effects.
+TRUE,Crystal,2,State_2,2,Potion,0,No significant effect.,Amulet,1,Reveals hidden knowledge and lost secrets.,,,
+TRUE,Herb,3,State_1,3,Potion,1,Increases vitality.,Spellbook,0,No significant effect.,Mushroom,1,Opens locked doors and gates.
+TRUE,Amulet,4,State_2,2,Crystal,1,Enhances protection and brings good luck.,Scroll,0,No significant effect.,,,
+TRUE,Scroll,5,State_1,2,Amulet,0,No significant effect.,Sword,1,Unlocks hidden knowledge and wisdom.,,,
+TRUE,Sword,6,State_2,1,Scroll,1,Enhances combat abilities and knowledge.,,,,,,
+TRUE,Spellbook,7,State_1,1,Herb,0,No significant effect.,,,,,,
+TRUE,Mushroom,8,State_2,1,Herb,1,Boosts health and vitality.,,,,,,
+TRUE,Snake Venom,9,State_1,1,Potion,-1,Leads to negative side effects.,,,,,,
+TRUE,Ring,10,State_1,2,Crystal,1,Enhances magical abilities.,Amulet,1,Reveals hidden knowledge and lost secrets.,,,
+TRUE,Elixir,11,State_1,2,Potion,1,Enhances strength.,Herb,1,Opens locked doors and gates.,,,
+TRUE,Key,12,State_2,2,Sword,1,Unlocks hidden knowledge and wisdom.,Crystal,1,Enhances magical abilities.,Potion,0,No significant effect.
+TRUE,Gemstone,13,State_1,2,Crystal,1,Enhances the magical properties of Crystal.,Lantern,1,Illuminates the surroundings brightly.,,,
+TRUE,Lantern,14,State_2,2,Oil,1,Enhances illumination.,Firefly,0,No significant effect.,Sword,1,Enhances combat abilities and knowledge.
+TRUE,Oil,15,State_1,2,Lantern,1,Enhances illumination.,Key,0,No significant effect.,Amulet,1,Reveals hidden knowledge and lost secrets.
+TRUE,Firefly,16,State_2,2,Lantern,0,No significant effect.,Robe,0,No significant effect.,,,
+TRUE,Shield,17,State_1,2,Sword,1,Enhances protection and combat skills.,Amulet,1,Reveals hidden knowledge and lost secrets.,Key,0,No significant effect.
+TRUE,Robe,18,State_2,2,Spellbook,1,Enhances magical abilities.,Key,0,No significant effect.,,,

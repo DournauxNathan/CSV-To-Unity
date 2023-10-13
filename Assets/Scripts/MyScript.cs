@@ -1,184 +1,155 @@
+/*
+ * MyScript is designed to manage a GameObject's attributes, components, and data.
+ * It includes methods for initializing the object, loading combinations of data, and retrieving component references.
+ * This script is suitable for handling object properties and interactions within a Unity scene.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEditor;
+using UnityEditor.Events;
 
+[System.Serializable]
 public class MyScript : MonoBehaviour
 {
-    private bool isGenerate;
-    internal new string name;
-    internal int iD;
-    internal string column4;
+    //This section defines data-related fields and an array for the object.
+    #region DATA
+    [Header("DATA")]
+    private bool isGenerate;  // Indicates whether this object is set to generate.
+
+    private new string name;  // The name of the object.
+    private int iD;          // The unique identifier (ID) of the object.
+    private State state;     // The state of the object.
+    private int totalCombination;  // The total number of combinations associated with the object.
+
+    public Combination[] combinaisons;  // Tooltip: An array of Combination objects representing different combinations.
+
+    [System.Serializable]
+    public class Combination
+    {
+        public string name;
+        public int influence;
+        public string outcome;
+    }
+    #endregion
     
-    /*Exemple of Variables
-    [Header("Data")]
-    public StateMobility state;
-    private int nCombinaison;
-    public CombineWith[] useWith;
-    public UnityEvent onLock, onUnlock;
+    // This section defines a private field to store a Component component and a public property to access it.
+    #region COMPONENT
 
-    [Header("Refs")]
-    private MeshFilter m_MeshFilter;
-    public MeshFilter meshFilter { get => m_MeshFilter; set => m_MeshFilter = value; }
+    [Header("COMPONENT")]
+    private SpriteRenderer m_SpriteRenderer; // Private field to store the SpriteRenderer component.
+    public SpriteRenderer spritRenderer
+{
+        get => m_SpriteRenderer; // Getter returns the stored SpriteRenderer component.
+        set => m_SpriteRenderer = value; // Setter assigns a new SpriteRenderer component to the field.
+    }
 
-    private MeshRenderer m_MeshRenderer;
-    public MeshRenderer meshRenderer { get => m_MeshRenderer; set => m_MeshRenderer = value; }
+    private BoxCollider m_BoxCollider;
+    public BoxCollider boxCollider { get => m_BoxCollider; set => m_BoxCollider = value; }
+    #endregion
 
-    private MeshCollider m_MeshCollider;
-    public MeshCollider meshCollider { get => m_MeshCollider; set => m_MeshCollider = value; }
+    /* This method sets the basic attributes of the GameObject, including its name, ID, state, and the total number of combinations it has. 
+     * It also initializes the 'combinaisons' array with the specified 'totalCombination'.
 
-    private SphereCollider m_Spherecollider;
-    public SphereCollider sphereCollider { get => m_Spherecollider; set => m_Spherecollider = value; }
-
-    private DissolveEffect m_DissolveEffect;
-    public DissolveEffect dissolveEffect { get => m_DissolveEffect; set => m_DissolveEffect = value; }
-
-    private AudioSource m_AudioSource;
-    public AudioSource audioSource { get => m_AudioSource; set => m_AudioSource = value; }
-
-    [Header("Outline Properties")]
-    public Outline outline;
-    public Material selectOutline;
-    public Color defaultOutlineColor;*/
-
-    internal bool component_1;
-    internal bool component_2;
-    internal bool component_3;
-    internal bool component_4;
-    internal bool component_5;
-    internal bool component_6;
-
+       Parameters:
+       - name: The name of the object.
+       - iD: The unique identifier (ID) of the object.
+       - state: The state of the object.
+       - totalCombination: The total number of combinations associated with the object.
+    */
     internal void Init(string[] entry)
     {
-        //Initialize GO data from entry
-        /*this.name = entry[1];
+        // Load all information from a CSV file into a GameObject
 
-        iD = int.Parse(entry[2]);
+        // Step 1: Initialize the basic information of the GameObject
+        LoadBaseInfo(entry[1], int.Parse(entry[2]), GetStateFromEntry(entry), int.Parse(entry[4]));
 
-        if (entry[3].Contains("STATIQUE"))
+        // Step 2: Load the combination data into the 'combinaisons' array
+        LoadCombination(combinaisons, totalCombination, entry);
+
+        // Step 3: Perform any additional setup or get other components
+        GetComponent();
+    }
+
+    /* This method initializes the base information of the object */
+    internal void LoadBaseInfo(string name, int iD, State state, int totalCombination)
+    {
+        // Set the object's name, ID, state, and the total number of combinations it has
+        this.name = name;
+        this.iD = iD;
+        this.state = state;
+        this.totalCombination = totalCombination;
+
+        // Initialize the 'combinaisons' array with the specified totalCombination
+        combinaisons = new Combination[totalCombination];
+    }
+
+    /* This method returns the state of the object based on the CSV file information */
+    internal State GetStateFromEntry(string[] entry)
+    {
+        // Check the entry data to determine the object's state
+        if (entry[3].Contains("State_1"))
         {
-            state = StateMobility.Static;
+            state = State.State_1;
         }
-        else if (entry[3].Contains("DYNAMIQUE"))
+        else if (entry[3].Contains("State_2"))
         {
-            state = StateMobility.Dynamic;
-        }
-
-        nCombinaison = int.Parse(entry[4]);
-
-        useWith = new CombineWith[nCombinaison];
-
-        if (nCombinaison <= 1)
-        {
-            useWith[0] = new CombineWith
-            {
-                objectName = entry[5],
-                influence = int.Parse(entry[6]),
-                outcome = entry[7]
-
-            };
-        }
-        else if (nCombinaison == 2)
-        {
-            useWith[0] = new CombineWith
-            {
-                objectName = entry[5],
-                influence = int.Parse(entry[6]),
-                outcome = entry[7]
-            };
-
-            useWith[1] = new CombineWith
-            {
-                objectName = entry[8],
-                influence = int.Parse(entry[9]),
-                outcome = entry[10]
-            };
-        }
-        else if (nCombinaison == 3)
-        {
-            useWith[0] = new CombineWith
-            {
-                objectName = entry[5],
-                influence = int.Parse(entry[6]),
-                outcome = entry[7]
-            };
-
-            useWith[1] = new CombineWith
-            {
-                objectName = entry[8],
-                influence = int.Parse(entry[9]),
-                outcome = entry[10]
-            };
-
-            useWith[2] = new CombineWith
-            {
-                objectName = entry[11],
-                influence = int.Parse(entry[12]),
-                outcome = entry[13]
-            };
-        }
-        else
-        {
-            useWith[0] = new CombineWith
-            {
-                objectName = entry[5],
-                influence = int.Parse(entry[6]),
-                outcome = entry[7]
-            };
-
-
-            useWith[1] = new CombineWith
-            {
-                objectName = entry[8],
-                influence = int.Parse(entry[9]),
-                outcome = entry[10]
-            };
-
-            useWith[2] = new CombineWith
-            {
-                objectName = entry[11],
-                influence = int.Parse(entry[12]),
-                outcome = entry[13]
-            };
-
-            useWith[3] = new CombineWith
-            {
-                objectName = entry[14],
-                influence = int.Parse(entry[15]),
-                outcome = entry[16]
-            };
+            state = State.State_2;
         }
 
-        for (var i = 0; i < useWith.Length; i++)
+        return state;
+    }
+
+    // Summary: Loads data from the 'entry' array into an array of 'Combination' objects.
+    // Populates each 'Combination' object with 'name', 'influence', and 'outcome' properties,
+    // where each set of data in the 'entry' array is represented as one 'Combination' object.
+    // Parameters:
+    // - array: The target array of 'Combination' objects to be populated.
+    // - totalCombi: The total number of combinations to load.
+    // - entry: The source array containing data to be loaded into 'Combination' objects.
+    internal void LoadCombination(Combination[] array, int totalCombi, string[] entry)
+    {
+        // Initialize a variable to keep track of the last column index
+        int lastColumn = 5;
+
+        // Loop through the totalCombi number of times
+        for (int i = 0; i < totalCombi; i++)
         {
-            Debug.Log(useWith.Length);
-            Debug.Log(useWith[i].objectName + ", " + i); //to remove
-            useWith[i].doAction = new UnityEvent();
-#if UNITY_EDITOR
-            UnityEventTools.AddIntPersistentListener(useWith[i].doAction, SendIdWithOutcome, i);
-#endif
+            // Create a new Combination object and populate its properties
+            array[i] = new Combination
+            {
+                // Set the 'name' property to the value at the current 'lastColumn' index in the 'entry' array
+                name = entry[lastColumn],
+
+                // Set the 'influence' property to the integer value obtained by parsing the element in 'entry' at 'lastColumn + 1'
+                influence = int.Parse(entry[lastColumn + 1]),
+
+                // Set the 'outcome' property to the value at 'entry' index 'lastColumn + 2'
+                outcome = entry[lastColumn + 2]
+            };
+
+            // Output debugging information to the console, showing the current iteration 'i' and the column indices used
+            Debug.Log(i + ": " + lastColumn + ", " + (lastColumn + 1) + ", " + (lastColumn + 2));
+
+            // Increment the 'lastColumn' index by 3 to move to the next set of columns in the 'entry' array
+            lastColumn += 3;
         }
-
-        LoadFromRessources();
-        SetOutline();
-        SetCollider();
-        InitAudioSource();*/
-
     }
 
     internal void GetComponent()
     {
+        // Get the SpriteRenderer component from the GameObject
+        m_SpriteRenderer = GetComponent<SpriteRenderer>();
 
+        // Get the BoxCollider component from the GameObject
+        m_BoxCollider = GetComponent<BoxCollider>();
     }
+}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public enum State
+{
+    State_1,
+    State_2
 }
