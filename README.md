@@ -1,8 +1,6 @@
 # Project README
 
-## Project Name
-
-[Project Name]
+## CSV-to-Unity
 
 ## Description
 
