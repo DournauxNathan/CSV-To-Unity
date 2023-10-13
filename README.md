@@ -1,12 +1,9 @@
-# Project README
-
-## Project Name
-
-[Project Name]
+# CSV-to-Unity
 
 ## Description
 
-This Unity project is designed to help you manage and process CSV data in a Unity scene by creating GameObjects and associating data with them. The project includes three key scripts: `CSVConfiguration`, `MyScript`, and `CSVConfigurationEditor`. These scripts work together to facilitate the loading and creation of GameObjects based on CSV data and enable customization of the Inspector interface for the CSV configuration.
+This Unity project is designed to help you manage and process CSV data in a Unity scene by creating GameObjects and associating data with them. The project includes three key scripts: `CSVConfiguration`, `MyScript`, and `CSVConfigurationEditor`. 
+These scripts work together to facilitate the loading and creation of GameObjects based on CSV data and enable customization of the Inspector interface for the CSV configuration.
 
 ## Table of Contents
 
@@ -26,6 +23,8 @@ To get started with this project, follow these steps:
 
 1. Clone or download the project repository.
 2. Open the project in Unity.
+### OR
+1. Download the `CSV-to-Unity`.unitypack
 
 ## Functionality
 
@@ -92,11 +91,3 @@ To use this project, follow these steps:
 
 6. Save Prefabs (Optional):
    - After generating GameObjects, you can save them as prefab assets by selecting them in the Hierarchy and clicking the "Save Prefabs" button in the Inspector.
-
-## Contributing
-
-Contributions to this project are welcome. You can submit bug reports, feature requests, or pull requests through GitHub.
-
-## License
-
-This project is licensed under the [License Name] License - see the [LICENSE.md](LICENSE.md) file for details.
