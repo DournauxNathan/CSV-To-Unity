@@ -32,6 +32,8 @@ To get started with this project, follow these steps:
 1. Download the [CSV-to-Unity.unitypack](https://github.com/DournauxNathan/CSV-to-Unity/releases/download/unityPackage/CSV-to-Unity.unitypackage)
 ## Functionality
 
+You can also download the Sheets and the CSV file in the Resources folder.
+
 This project offers the following key functionalities:
 
 1. **CSV Data Processing:** It can process CSV data, read the content, and create or modify GameObjects in your Unity scene. The processing is customizable, allowing you to specify the separator character used in the CSV.
