@@ -16,8 +16,7 @@ These scripts work together to **facilitate the loading and creation of GameObje
 2. [Functionality](#functionality)
 3. [Scripts](#scripts)
    1. [CSVConfiguration](#csvconfiguration)
-   2. [MyScript](#myscript)
-   3. [CSVConfigurationEditor](#csvconfigurationeditor)
+   2. [CSVConfigurationEditor](#csvconfigurationeditor)
 4. [Usage](#usage)
 5. [Contributing](#contributing)
 6. [License](#license)
@@ -29,11 +28,12 @@ To get started with this project, follow these steps:
 1. Clone or download the project repository.
 2. Open the project in Unity.
 ### OR
-1. Download the [CSV-to-Unity.unitypack](https://github.com/DournauxNathan/CSV-to-Unity/releases/download/unityPackage/CSV-to-Unity.unitypackage)
+1. Download the [CSV-to-Unity.unitypack](https://github.com/DournauxNathan/CSV-to-Unity/releases/download/unityPackage/CSV-to-Unity.unitypackage).
+2. Download the [CSV](https://github.com/DournauxNathan/CSV-to-Unity/releases/download/unityPackage/SHEET_1.csv) file.
+3. If needed here the link to the [Sheets](https://github.com/DournauxNathan/CSV-to-Unity/releases/download/unityPackage/CSV-to-Unity.xlsx).
+
+
 ## Functionality
-
-You can also download the Sheets and the CSV file in the Resources folder.
-
 This project offers the following key functionalities:
 
 1. **CSV Data Processing:** It can process CSV data, read the content, and create or modify GameObjects in your Unity scene. The processing is customizable, allowing you to specify the separator character used in the CSV.
