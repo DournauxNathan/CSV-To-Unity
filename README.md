@@ -24,8 +24,7 @@ To get started with this project, follow these steps:
 1. Clone or download the project repository.
 2. Open the project in Unity.
 ### OR
-1. Download the `CSV-to-Unity`.unitypack
-
+1. Download the [CSV-to-Unity.unitypack](URL)
 ## Functionality
 
 This project offers the following key functionalities:
