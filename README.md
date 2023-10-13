@@ -1,6 +1,4 @@
-# Project README
-
-## CSV-to-Unity
+# CSV-to-Unity
 
 ## Description
 
